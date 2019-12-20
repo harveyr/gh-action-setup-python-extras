@@ -1,0 +1,6 @@
+name: Setup Python Extras
+description: Github Action to setup some extra Python problem matchers
+author: Harvey Rogers
+runs:
+  using: node12
+  main: dist/index.js
