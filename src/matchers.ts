@@ -19,8 +19,7 @@ export function getMatchersPaths(): string[] {
 }
 
 export function installMatchers(): void {
-  for (const matcher of getMatchersPaths()) {
-    const matcherPath = path.join(MATCHERS_PATH, matcher)
+  for (const matcherPath of getMatchersPaths()) {
     core.debug(`Installing matcher from: ${matcherPath}`)
     console.log(`##[add-matcher]${matcherPath}`)
   }
