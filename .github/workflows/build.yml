@@ -28,7 +28,11 @@ jobs:
       - name: Test against a Python file
         run: |
           pip install mypy flake8
+          echo "Testing Mypy"
+          echo "------------"
           mypy --show-error-codes __tests__/assets/guinea_pig.py
+          echo "Testing Flake8"
+          echo "--------------"
           flake8 __tests__/assets/guinea_pig.py
 
       - uses: harveyr/gh-action-publish@releases/v0

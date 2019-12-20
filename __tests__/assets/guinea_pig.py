@@ -1,4 +1,5 @@
+# Make this file ugly to test the problem matchersimport typing
 
-#ugly
-def make_me_ugly_to_test_the_matchers(arg: str) -> bool:
+
+def make_me_ugly(arg: str) -> bool:
     return True
