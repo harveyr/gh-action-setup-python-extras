@@ -2,27 +2,36 @@ name: CI
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - run: npm ci
+      - run: npm ci
 
-    - run: npm run dist
+      - run: npm run dist
 
-    - uses: ./
-      env:
-        ACTIONS_STEP_DEBUG: 'true'
+      - uses: ./
+        env:
+          ACTIONS_STEP_DEBUG: 'true'
 
-    - run: npx prettier --list-different src/**/**.ts
+      - run: npx prettier --list-different src/**/**.ts
 
-    - run: npx eslint src/**/**.ts __tests__/**/**.ts
+      - run: npx eslint src/**/**.ts __tests__/**/**.ts
 
-    - run: npm run build
+      - run: npm test
 
-    - run: npm test
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
 
-    - uses: harveyr/gh-action-publish@releases/v0
-      with:
-        dirs: dist
-      if: contains(github.ref, 'refs/heads/versions/' )
+      - name: Test against a Python file
+        run: |
+          pip install mypy flake8
+          mypy --show-error-codes __tests__/assets/guinea_pig.py
+          flake8 __tests__/assets/guinea_pig.py
+
+      - uses: harveyr/gh-action-publish@releases/v0
+        with:
+          dirs: dist
+        if: contains(github.ref, 'refs/heads/versions/' )
