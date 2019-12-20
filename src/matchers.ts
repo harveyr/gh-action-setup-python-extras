@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { Matcher } from './types'
+import * as core from '@actions/core'
 
 const MATCHERS_PATH = path.join(__dirname, '..', '.github/matchers')
 
@@ -20,6 +21,7 @@ export function getMatchersPaths(): string[] {
 export function installMatchers(): void {
   for (const matcher of getMatchersPaths()) {
     const matcherPath = path.join(MATCHERS_PATH, matcher)
+    core.debug(`Installing matcher from: ${matcherPath}`)
     console.log(`##[add-matcher]${matcherPath}`)
   }
 }
