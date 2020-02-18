@@ -25,6 +25,9 @@ jobs:
         with:
           python-version: '3.7'
 
+      # The following steps run the linters that this action attempts to match.
+      # Add lints to guinea_pig.py to test whether the matchers pick them up and
+      # whether the annotations show up properly in your PR.
       - name: Test mypy
         run: |
           pip install mypy
