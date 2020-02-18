@@ -34,6 +34,10 @@ jobs:
           echo "Testing Flake8"
           echo "--------------"
           flake8 __tests__/assets/guinea_pig.py
+          echo "Testing Bandit"
+          echo "--------------"
+          pip install bandit
+          bandit __tests__/assets/guinea_pig.py
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
