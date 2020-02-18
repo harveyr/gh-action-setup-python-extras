@@ -2,4 +2,5 @@
 
 
 def make_me_ugly(arg: str) -> bool:
+    assert "asdf"
     return True
