@@ -35,3 +35,29 @@ test('flake8 matcher', () => {
   expect(match[4]).toEqual('F821')
   expect(match[5].trim()).toEqual(`undefined name 'Fondu'`)
 })
+
+test('bandit matcher', () => {
+  const data = matchers.loadMatcherData(
+    matchers.getMatcherPath('bandit-csv.json'),
+  )
+  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  // (1)filename,(2)test_name,(3)test_id,(4)issue_severity,(5)issue_confidence,(6)issue_text,(7)line_number,(8)line_range,(9)more_info
+  const match = regexp.exec(
+    `blarbl/farbl/views.py,hardcoded_password_string,B105,LOW,MEDIUM,Possible hardcoded password: 'Super-secret!',3154,[3154],https://bandit.readthedocs.io/en/latest/plugins/b105_hardcoded_password_string.html`,
+  )
+
+  expect(match).toBeTruthy()
+  if (!match) return
+
+  expect(match[1]).toEqual('blarbl/farbl/views.py')
+  expect(match[2]).toEqual('hardcoded_password_string')
+  expect(match[3]).toEqual('B105')
+  expect(match[4]).toEqual('LOW')
+  expect(match[5]).toEqual('MEDIUM')
+  expect(match[6]).toEqual(`Possible hardcoded password: 'Super-secret!'`)
+  expect(match[7]).toEqual('3154')
+  expect(match[8]).toEqual('[3154]')
+  expect(match[9]).toEqual(
+    'https://bandit.readthedocs.io/en/latest/plugins/b105_hardcoded_password_string.html',
+  )
+})
