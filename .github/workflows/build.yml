@@ -25,19 +25,20 @@ jobs:
         with:
           python-version: '3.7'
 
-      - name: Test against a Python file
+      - name: Test mypy
         run: |
-          pip install mypy flake8
-          echo "Testing Mypy"
-          echo "------------"
+          pip install mypy
           mypy --show-error-codes __tests__/assets/guinea_pig.py
-          echo "Testing Flake8"
-          echo "--------------"
+
+      - name: Test flake8
+        run: |
+          pip install flake8
           flake8 __tests__/assets/guinea_pig.py
-          echo "Testing Bandit"
-          echo "--------------"
+
+      - name: Test bandit
+        run: |
           pip install bandit
-          bandit __tests__/assets/guinea_pig.py
+          bandit --format=csv __tests__/assets/guinea_pig.py
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
