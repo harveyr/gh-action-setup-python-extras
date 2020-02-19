@@ -3,6 +3,8 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-18.04
+    env:
+      TEST_FILE: __tests__/assets/guinea_pig.py
     steps:
       - uses: actions/checkout@v2
 
@@ -31,17 +33,22 @@ jobs:
       - name: Test mypy
         run: |
           pip install mypy
-          mypy --show-error-codes __tests__/assets/guinea_pig.py
+          mypy --show-error-codes $TEST_FILE
 
       - name: Test flake8
         run: |
           pip install flake8
-          flake8 __tests__/assets/guinea_pig.py
+          flake8 $TEST_FILE
 
       - name: Test bandit
         run: |
           pip install bandit
-          bandit --format=csv __tests__/assets/guinea_pig.py
+          bandit --format=csv $TEST_FILE
+
+      - name: Test vulture
+        run: |
+          pip install vulture
+          vulture $TEST_FILE
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
