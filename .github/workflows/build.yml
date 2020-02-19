@@ -49,6 +49,7 @@ jobs:
         run: |
           pip install vulture
           vulture $TEST_FILE
+        continue-on-error: true
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
