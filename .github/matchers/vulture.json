@@ -2,7 +2,7 @@
   "problemMatcher": [
     {
       "owner": "vulture",
-      "severity": "info",
+      "severity": "warning",
       "pattern": [
         {
           "regexp": "^([^:]+):(\\d+):\\s+(.+)$",
