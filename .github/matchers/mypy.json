@@ -1,7 +1,7 @@
 {
   "problemMatcher": [
     {
-      "owner": "mypy-with-code",
+      "owner": "mypy",
       "pattern": [
         {
           "regexp": "^([\\S^:]+):(\\d+):\\s(.+)\\s\\[([a-z-]+)\\]$",

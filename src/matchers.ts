@@ -5,23 +5,19 @@ import * as core from '@actions/core'
 
 const MATCHERS_PATH = path.join(__dirname, '..', '.github/matchers')
 
-export function getMatcherPath(matcherFileName: string): string {
-  const result = path.join(MATCHERS_PATH, matcherFileName)
-  if (!fs.existsSync(result)) {
-    throw new Error(`Matcher does not exist: ${result}`)
+export function getMatcherPath(name: string): string {
+  const fpath = path.join(MATCHERS_PATH, `${name}.json`)
+  if (!fs.existsSync(fpath)) {
+    throw new Error(`Matcher does not exist: ${fpath}`)
   }
-
-  return result
+  return fpath
 }
 
-export function getMatchersPaths(): string[] {
-  return fs.readdirSync(MATCHERS_PATH).map(getMatcherPath)
-}
-
-export function installMatchers(): void {
-  for (const matcherPath of getMatchersPaths()) {
-    core.debug(`Installing matcher from: ${matcherPath}`)
-    console.log(`##[add-matcher]${matcherPath}`)
+export function installMatchers(names: string[]): void {
+  for (const name of names) {
+    core.debug(`Installing matcher: ${name}`)
+    const fpath = getMatcherPath(name)
+    console.log(`##[add-matcher]${fpath}`)
   }
 }
 

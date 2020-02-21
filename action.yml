@@ -1,6 +1,11 @@
 name: Setup Python Extras
 description: Github Action to setup some extra Python problem matchers
 author: Harvey Rogers
+inputs:
+  install:
+    description: Problem matchers to install
+    default: bandit-csv flake8 mypy pydocstyle
+    required: true
 runs:
   using: node12
   main: dist/index.js
