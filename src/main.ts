@@ -6,7 +6,7 @@ async function run(): Promise<void> {
   const matcherNames: string[] = kit.tokenize(
     core.getInput('install', { required: true }),
   )
-  matchers.installMatchers(matcherNames)
+  return matchers.installMatchers(matcherNames)
 }
 
 run().catch(err => {

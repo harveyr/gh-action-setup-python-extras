@@ -1,7 +1,7 @@
 import * as matchers from '../src/matchers'
 
 test('mypy matcher', () => {
-  const fpath = matchers.getMatcherPath('mypy-with-code.json')
+  const fpath = matchers.getMatcherPath('mypy')
   const data = matchers.loadMatcherData(fpath)
   const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
   const match = regexp.exec(
@@ -20,7 +20,7 @@ test('mypy matcher', () => {
 })
 
 test('flake8 matcher', () => {
-  const data = matchers.loadMatcherData(matchers.getMatcherPath('flake8.json'))
+  const data = matchers.loadMatcherData(matchers.getMatcherPath('flake8'))
   const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
   const match = regexp.exec(
     `bling/blang/management/commands/csv.py:73:21: F821 undefined name 'Fondu'`,
@@ -37,9 +37,7 @@ test('flake8 matcher', () => {
 })
 
 test('bandit matcher', () => {
-  const data = matchers.loadMatcherData(
-    matchers.getMatcherPath('bandit-csv.json'),
-  )
+  const data = matchers.loadMatcherData(matchers.getMatcherPath('bandit-csv'))
   const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
   // (1)filename,(2)test_name,(3)test_id,(4)issue_severity,(5)issue_confidence,(6)issue_text,(7)line_number,(8)line_range,(9)more_info
   const match = regexp.exec(
