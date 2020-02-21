@@ -7,6 +7,7 @@ export function parseInstallInput(s: string): InstallToken[] {
   const validSeverities = ['warning', 'error']
 
   const tokens = kit.tokenize(s)
+  console.log('tokens', tokens)
   for (const token of tokens) {
     const parts = token.split(':')
     if (parts.length !== 2) {
@@ -22,5 +23,6 @@ export function parseInstallInput(s: string): InstallToken[] {
     result.push({ matcherName, severity: severity as Severity })
   }
 
+  console.log('result', result)
   return result
 }
