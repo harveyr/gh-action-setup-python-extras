@@ -3,6 +3,8 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-18.04
+    env:
+      TEST_FILE: __tests__/assets/guinea_pig.py
     steps:
       - uses: actions/checkout@v2
 
@@ -28,20 +30,26 @@ jobs:
       # The following steps run the linters that this action attempts to match.
       # Add lints to guinea_pig.py to test whether the matchers pick them up and
       # whether the annotations show up properly in your PR.
+      - name: Test pydocstyle
+        run: |
+          pip install pydocstyle
+          pydocstyle $TEST_FILE
+        continue-on-error: true
+
       - name: Test mypy
         run: |
           pip install mypy
-          mypy --show-error-codes __tests__/assets/guinea_pig.py
+          mypy --show-error-codes $TEST_FILE
 
       - name: Test flake8
         run: |
           pip install flake8
-          flake8 __tests__/assets/guinea_pig.py
+          flake8 $TEST_FILE
 
       - name: Test bandit
         run: |
           pip install bandit
-          bandit --format=csv __tests__/assets/guinea_pig.py
+          bandit --format=csv $TEST_FILE
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
