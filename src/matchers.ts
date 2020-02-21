@@ -15,7 +15,9 @@ export function getMatcherPath(name: string): string {
 
 export function installMatchers(names: string[]): void {
   for (const name of names) {
-    core.info(`Installing matcher: ${name}`)
+    // Keep this log line debug because the Github Action will log the
+    // installation as well.
+    core.debug(`Installing matcher: ${name}`)
     const fpath = getMatcherPath(name)
     console.log(`##[add-matcher]${fpath}`)
   }
