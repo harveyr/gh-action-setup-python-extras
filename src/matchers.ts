@@ -15,7 +15,7 @@ export function getMatcherPath(name: string): string {
 
 export function installMatchers(names: string[]): void {
   for (const name of names) {
-    core.debug(`Installing matcher: ${name}`)
+    core.info(`Installing matcher: ${name}`)
     const fpath = getMatcherPath(name)
     console.log(`##[add-matcher]${fpath}`)
   }
