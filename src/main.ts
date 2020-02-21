@@ -8,7 +8,6 @@ async function run(): Promise<void> {
     core.getInput('install', { required: true }),
   )
   const fpaths = matchers.writeMatchers(installs)
-  console.log('FIXME: fpaths', fpaths)
   fpaths.map(matchers.installMatcher)
 }
 

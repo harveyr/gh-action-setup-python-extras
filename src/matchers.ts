@@ -31,6 +31,8 @@ export function writeMatchers(installs: InstallToken[]): string[] {
       pm.severity = severity
     })
     const fpath = path.join(OUT_PATH, `${matcherName}.json`)
+
+    core.info(`Writing ${fpath}`)
     fs.writeFileSync(fpath, JSON.stringify(matcher))
     fpaths.push(fpath)
   }
