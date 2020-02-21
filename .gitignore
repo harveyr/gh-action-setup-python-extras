@@ -1,3 +1,5 @@
+.github/matchers/
+
 # Include the .npmrc in this repo.
 !.npmrc
 

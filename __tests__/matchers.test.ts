@@ -1,9 +1,14 @@
 import * as matchers from '../src/matchers'
 
+function getMatcherRegexps(name: string): RegExp[] {
+  const matcher = matchers.getValidatedDefaultMatcher(name)
+  return matcher.problemMatcher[0].pattern.map(p => {
+    return new RegExp(p.regexp)
+  })
+}
+
 test('mypy matcher', () => {
-  const fpath = matchers.getMatcherPath('mypy')
-  const data = matchers.loadMatcherData(fpath)
-  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  const regexp = getMatcherRegexps('mypy')[0]
   const match = regexp.exec(
     `bingo/configuration/util.py:56: error: Incompatible return value type (got "bool", expected "str")  [return-value]`,
   )
@@ -20,8 +25,7 @@ test('mypy matcher', () => {
 })
 
 test('flake8 matcher', () => {
-  const data = matchers.loadMatcherData(matchers.getMatcherPath('flake8'))
-  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  const regexp = getMatcherRegexps('flake8')[0]
   const match = regexp.exec(
     `bling/blang/management/commands/csv.py:73:21: F821 undefined name 'Fondu'`,
   )
@@ -37,8 +41,7 @@ test('flake8 matcher', () => {
 })
 
 test('bandit matcher', () => {
-  const data = matchers.loadMatcherData(matchers.getMatcherPath('bandit-csv'))
-  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  const regexp = getMatcherRegexps('bandit-csv')[0]
   // (1)filename,(2)test_name,(3)test_id,(4)issue_severity,(5)issue_confidence,(6)issue_text,(7)line_number,(8)line_range,(9)more_info
   const match = regexp.exec(
     `blarbl/farbl/views.py,hardcoded_password_string,B105,LOW,MEDIUM,Possible hardcoded password: 'Super-secret!',3154,[3154],https://bandit.readthedocs.io/en/latest/plugins/b105_hardcoded_password_string.html`,
@@ -61,8 +64,7 @@ test('bandit matcher', () => {
 })
 
 test('vulture matcher', () => {
-  const data = matchers.loadMatcherData(matchers.getMatcherPath('vulture'))
-  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  const regexp = getMatcherRegexps('vulture')[0]
   const match = regexp.exec(
     `fondu/dip/models.py:4498: unused property 'vendor_name' (60% confidence, 10 lines)`,
   )
