@@ -6,6 +6,7 @@ import { parseInstallInput } from './input'
 async function run(): Promise<void> {
   const installs = parseInstallInput(core.getInput('severity'))
   const fpaths = matchers.writeMatchers(installs)
+  console.log('FIXME: fpaths', fpaths)
   fpaths.map(matchers.installMatcher)
 }
 
