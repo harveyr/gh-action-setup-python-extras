@@ -4,7 +4,7 @@ author: Harvey Rogers
 inputs:
   install:
     description: Problem matchers to install
-    default: bandit-csv flake8 mypy pydocstyle
+    default: bandit-csv flake8 mypy pydocstyle vulture
     required: true
 runs:
   using: node12

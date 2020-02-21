@@ -59,3 +59,20 @@ test('bandit matcher', () => {
     'https://bandit.readthedocs.io/en/latest/plugins/b105_hardcoded_password_string.html',
   )
 })
+
+test('vulture matcher', () => {
+  const data = matchers.loadMatcherData(matchers.getMatcherPath('vulture'))
+  const regexp = new RegExp(data.problemMatcher[0].pattern[0].regexp)
+  const match = regexp.exec(
+    `fondu/dip/models.py:4498: unused property 'vendor_name' (60% confidence, 10 lines)`,
+  )
+
+  expect(match).toBeTruthy()
+  if (!match) return
+
+  expect(match[1]).toEqual('fondu/dip/models.py')
+  expect(match[2]).toEqual('4498')
+  expect(match[3]).toEqual(
+    `unused property 'vendor_name' (60% confidence, 10 lines)`,
+  )
+})
