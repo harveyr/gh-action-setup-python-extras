@@ -6,8 +6,7 @@
         {
           "regexp": "^(\\S+):(\\d+) (in.+):$",
           "file": 1,
-          "line": 2,
-          "message": 3
+          "line": 2
         },
         {
           "regexp": "^.+(D\\d+): (.+)$",
