@@ -12,9 +12,8 @@ jobs:
 
       - run: npm run dist
 
-      - uses: ./
-        env:
-          ACTIONS_STEP_DEBUG: 'true'
+      - name: Run action
+        uses: ./
 
       - run: npx prettier --list-different src/**/**.ts
 
