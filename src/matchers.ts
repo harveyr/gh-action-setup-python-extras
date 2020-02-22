@@ -22,6 +22,9 @@ export function getValidatedDefaultMatcher(name: string): ProblemMatcher {
   return matcher
 }
 
+/**
+ * Write the matcher data to JSON files that we'll give to the Github Action.
+ */
 export function writeMatchers(installs: InstallToken[]): string[] {
   if (!fs.existsSync(OUT_PATH)) {
     fs.mkdirSync(OUT_PATH)
@@ -36,26 +39,17 @@ export function writeMatchers(installs: InstallToken[]): string[] {
     })
     const fpath = path.join(OUT_PATH, `${matcherName}.json`)
 
-    core.info(`Writing ${fpath}`)
+    core.debug(`Writing ${fpath}`)
     fs.writeFileSync(fpath, JSON.stringify(matcher))
     fpaths.push(fpath)
   }
 
-  console.log('FIXME:', fs.readdirSync(OUT_PATH))
-
   return fpaths
 }
 
-// export function getMatcherPath(name: string): string {
-//   const fpath = path.join(MATCHERS_PATH, `${name}.json`)
-//   if (!fs.existsSync(fpath)) {
-//     throw new Error(`Matcher does not exist: ${fpath}`)
-//   }
-//   return fpath
-// }
-
-// export function writeMatchers()
-
+/**
+ * Tell GitHub to install the problem matcher JSON file.
+ */
 export function installMatcher(fpath: string): void {
   // Keep this log line debug because the Github Action will log the
   // installation as well.
