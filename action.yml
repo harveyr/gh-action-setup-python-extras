@@ -1,6 +1,15 @@
 name: Setup Python Extras
 description: Github Action to setup some extra Python problem matchers
 author: Harvey Rogers
+inputs:
+  matchers:
+    description: Problem matchers to install and their GitHub severities (must be either 'warning' or 'error')
+    default: |
+      bandit-csv:warning
+      flake8:error
+      mypy:error
+      pydocstyle:warning
+      vulture:warning
 runs:
   using: node12
   main: dist/index.js

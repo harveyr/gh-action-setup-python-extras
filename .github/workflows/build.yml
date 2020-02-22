@@ -12,9 +12,8 @@ jobs:
 
       - run: npm run dist
 
-      - uses: ./
-        env:
-          ACTIONS_STEP_DEBUG: 'true'
+      - name: Run action
+        uses: ./
 
       - run: npx prettier --list-different src/**/**.ts
 
@@ -30,6 +29,12 @@ jobs:
       # The following steps run the linters that this action attempts to match.
       # Add lints to guinea_pig.py to test whether the matchers pick them up and
       # whether the annotations show up properly in your PR.
+      - name: Test pydocstyle
+        run: |
+          pip install pydocstyle
+          pydocstyle $TEST_FILE
+        continue-on-error: true
+
       - name: Test mypy
         run: |
           pip install mypy

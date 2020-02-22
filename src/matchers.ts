@@ -1,30 +1,58 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Matcher } from './types'
+import { InstallToken, ProblemMatcher } from './types'
 import * as core from '@actions/core'
 
-const MATCHERS_PATH = path.join(__dirname, '..', '.github/matchers')
+import { DEFAULT_MATCHERS } from './constants'
 
-export function getMatcherPath(matcherFileName: string): string {
-  const result = path.join(MATCHERS_PATH, matcherFileName)
-  if (!fs.existsSync(result)) {
-    throw new Error(`Matcher does not exist: ${result}`)
+const OUT_PATH = path.join(__dirname, '..', '.github/matchers')
+
+export function getValidatedDefaultMatcher(name: string): ProblemMatcher {
+  const matcher = DEFAULT_MATCHERS.get(name)
+  if (!matcher) {
+    throw new Error(`No matcher found with name "${name}"`)
+  }
+  const owner = matcher.problemMatcher[0].owner
+  if (name.indexOf(owner) !== 0) {
+    throw new Error(
+      `Name "${name}" does not start with name "${owner}". Cowardly bailing.`,
+    )
   }
 
-  return result
+  return matcher
 }
 
-export function getMatchersPaths(): string[] {
-  return fs.readdirSync(MATCHERS_PATH).map(getMatcherPath)
-}
-
-export function installMatchers(): void {
-  for (const matcherPath of getMatchersPaths()) {
-    core.debug(`Installing matcher from: ${matcherPath}`)
-    console.log(`##[add-matcher]${matcherPath}`)
+/**
+ * Write the matcher data to JSON files that we'll give to the Github Action.
+ */
+export function writeMatchers(installs: InstallToken[]): string[] {
+  if (!fs.existsSync(OUT_PATH)) {
+    fs.mkdirSync(OUT_PATH)
   }
+
+  const fpaths: string[] = []
+  for (const install of installs) {
+    const { matcherName, severity } = install
+    const matcher = getValidatedDefaultMatcher(matcherName)
+    matcher.problemMatcher.forEach(pm => {
+      pm.severity = severity
+    })
+    const fpath = path.join(OUT_PATH, `${matcherName}.json`)
+
+    core.debug(`Writing ${fpath}`)
+    fs.writeFileSync(fpath, JSON.stringify(matcher))
+    fpaths.push(fpath)
+  }
+
+  return fpaths
 }
 
-export function loadMatcherData(fpath: string): Matcher {
-  return JSON.parse(fs.readFileSync(fpath).toString('utf8'))
+/**
+ * Tell GitHub to install the problem matcher JSON file.
+ */
+export function installMatcher(fpath: string): void {
+  // Keep this log line debug because the Github Action will log the
+  // installation as well.
+  core.debug(`Installing matcher: ${fpath}`)
+  console.log(`##[add-matcher]${fpath}`)
 }
