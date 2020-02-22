@@ -23,6 +23,10 @@ export function getValidatedDefaultMatcher(name: string): ProblemMatcher {
 }
 
 export function writeMatchers(installs: InstallToken[]): string[] {
+  if (!fs.existsSync(OUT_PATH)) {
+    fs.mkdirSync(OUT_PATH)
+  }
+
   const fpaths: string[] = []
   for (const install of installs) {
     const { matcherName, severity } = install
