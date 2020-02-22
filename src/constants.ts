@@ -1,4 +1,6 @@
-import { ProblemMatcher } from './types'
+import { ProblemMatcher, Severity } from './types'
+
+export const VALID_SEVERITIES: Severity[] = ['warning', 'error']
 
 const DEFAULT_MATCHER_BANDIT: ProblemMatcher = {
   problemMatcher: [

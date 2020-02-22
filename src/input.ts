@@ -1,13 +1,12 @@
 import * as kit from '@harveyr/github-actions-kit'
 import { InstallToken, Severity } from './types'
+import { VALID_SEVERITIES } from './constants'
 
 /**
- * Parse and validate the raw input string from the `install` param.
+ * Parse and validate the raw input string from the `matchers` param.
  */
-export function parseInstallInput(s: string): InstallToken[] {
+export function parseMatchers(s: string): InstallToken[] {
   const result: InstallToken[] = []
-
-  const validSeverities = ['warning', 'error']
 
   const tokens = kit.tokenize(s)
   for (const token of tokens) {
@@ -15,8 +14,9 @@ export function parseInstallInput(s: string): InstallToken[] {
     if (parts.length !== 2) {
       throw new Error(`Invalid install token: ${token}`)
     }
-    const [matcherName, severity] = parts
-    if (!validSeverities.includes(severity)) {
+    const matcherName = parts[0]
+    const severity = parts[1] as Severity
+    if (!VALID_SEVERITIES.includes(severity)) {
       throw new Error(
         `Invalid install token: ${token} (invalid severity "${severity}")`,
       )
