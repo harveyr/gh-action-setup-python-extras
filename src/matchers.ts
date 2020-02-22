@@ -37,6 +37,8 @@ export function writeMatchers(installs: InstallToken[]): string[] {
     fpaths.push(fpath)
   }
 
+  console.log('FIXME:', fs.readdirSync(OUT_PATH))
+
   return fpaths
 }
 
